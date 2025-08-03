@@ -36,5 +36,6 @@ databases:
 
 staticSites:
   - name: healthquiz-frontend
-    path: ./frontend
-    cacheDuration: 300
+    path: frontend
+    buildCommand: echo "No build needed for static site"
+    publishDirectory: frontend
