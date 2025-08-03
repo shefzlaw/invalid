@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthQuiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login / Register Screen -->
+    <div id="login-screen">
+        <div class="login-container">
+            <div class="login-logo">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 4L12 20M12 4L8 8M12 4L16 8" stroke="#1e40af" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 12H20M4 12L8 8M4 12L8 16" stroke="#1e40af" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <h2>HealthQuiz</h2>
+            </div>
+
+            <!-- Auth Tabs -->
+            <div class="auth-tabs">
+                <button id="login-tab" class="tab-btn active">Login</button>
+                <button id="register-tab" class="tab-btn">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Sign In</button>
+                <p class="switch-text">Don't have an account? <a id="goto-register" href="#">Register</a></p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="new-username">Username</label>
+                    <input type="text" id="new-username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Password</label>
+                    <input type="password" id="new-password" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <ul class="password-requirements hidden" id="password-req">
+                    <li id="length">At least 6 characters</li>
+                    <li id="lowercase">One lowercase letter (a-z)</li>
+                    <li id="uppercase">One uppercase letter (A-Z)</li>
+                    <li id="number">One number (0-9)</li>
+                </ul>
+                <button type="submit">Create Account</button>
+                <p class="switch-text">Already have an account? <a id="goto-login" href="#">Login</a></p>
+            </form>
+
+            <p class="small-text">HEALTHQUIZ@2025</p>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-container">
+            <div class="loader-logo">
+                <svg class="loader-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 4L12 20M12 4L8 8M12 4L16 8" stroke="#1e40af" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 12H20M4 12L8 8M4 12L8 16" stroke="#1e40af" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <h2>HealthQuiz</h2>
+            </div>
+            <p>Loading your quiz experience...</p>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="container">
+        <div class="quiz-container">
+            <!-- Department Selection Screen -->
+            <div id="department-screen" class="hidden">
+                <header>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h1>HealthQuiz</h1>
+                        <div class="user-controls">
+                            <span class="user-greeting"></span>
+                            <button id="logout-btn" class="small-btn">Logout</button>
+                        </div>
+                    </div>
+                    <p>Select your access level and department</p>
+                </header>
+                <main class="departments-grid">
+                    <!-- Buttons and departments generated dynamically -->
+                </main>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quiz-screen" class="hidden">
+                <header>
+                    <h1 id="dept-title">Quiz</h1>
+                    <div class="access-badge" id="access-badge">Free User</div>
+                    <div class="timer-container">
+                        <div class="timer-bar"></div>
+                        <div class="timer-text">Time: <span id="timer">30</span>s</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="score-container">
+                        <span class="score">Score: <span id="score">0</span></span>
+                        <span class="question-number">Question <span id="question-number">1</span> of <span id="total-questions">5</span></span>
+                    </div>
+                </header>
+
+                <main>
+                    <div id="quiz">
+                        <div id="question-container">
+                            <h2 id="question">Question will appear here</h2>
+                        </div>
+                        <div id="options-container">
+                            <!-- Options generated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Summary Modal -->
+                    <div id="summary-modal" class="modal hidden">
+                        <div class="modal-content">
+                            <h2>Quiz Summary</h2>
+                            <p>Review your answers before submitting:</p>
+                            <div id="summary-list"></div>
+                            <div class="modal-actions">
+                                <button id="cancel-submit">Back to Quiz</button>
+                                <button id="confirm-submit">Submit Quiz</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Screen -->
+                    <div id="result-container" class="hidden">
+                        <h2>Quiz Completed!</h2>
+                        <p>Your score: <span id="final-score">0</span>/<span id="max-score">5</span></p>
+                        <p id="result-message"></p>
+                        <div class="result-details">
+                            <p><strong>Department:</strong> <span id="result-dept"></span></p>
+                            <p><strong>Access Level:</strong> <span id="result-access"></span></p>
+                            <p><strong>Date:</strong> <span id="result-date"></span></p>
+                            <p><strong>Percentage:</strong> <span id="result-percentage"></span>%</p>
+                        </div>
+                        <div class="result-actions">
+                            <button id="print-results">Print Results</button>
+                            <button id="restart-btn">Restart Quiz</button>
+                            <button id="back-to-depts" class="secondary-btn">Back to Departments</button>
+                        </div>
+                    </div>
+                </main>
+
+                <footer>
+                    <button id="prev-btn" class="hidden">Previous</button>
+                    <button id="next-btn" class="hidden">Next Question</button>
+                    <button id="submit-btn" class="hidden">Submit Quiz</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Access Code Modal -->
+    <div id="access-code-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Enter Access Code</h2>
+            <p>Have an access code? Enter it below to unlock premium access.</p>
+            
+            <div class="code-input-container">
+                <input type="text" id="access-code-input" placeholder="Enter your 6-digit code" maxlength="6">
+                <button id="verify-code-btn">Verify Code</button>
+            </div>
+            
+            <div class="code-instructions">
+                <h3>How to Use</h3>
+                <ol>
+                    <li>Enter your 6-digit access code</li>
+                    <li>Click "Verify Code"</li>
+                    <li>Get instant premium access</li>
+                </ol>
+                <p class="note"><strong>Note:</strong> Each code can only be used once.</p>
+            </div>
+            
+            <div id="code-result" class="code-result hidden"></div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-payment-modal">&times;</span>
+            <h2>Upgrade Your Access</h2>
+            <p>Choose a subscription plan to unlock full access.</p>
+            
+            <div class="pricing-plans">
+                <div class="plan">
+                    <h3>3 Months Access</h3>
+                    <div class="price">₦1,000</div>
+                    <ul>
+                        <li>Unlimited quizzes</li>
+                        <li>All departments</li>
+                        <li>Full question bank</li>
+                        <li>Progress tracking</li>
+                    </ul>
+                    <button class="pay-btn" data-plan="3" data-amount="1000">Pay with Paystack</button>
+                </div>
+                
+                <div class="plan recommended">
+                    <div class="badge">Best Value</div>
+                    <h3>7 Months Access</h3>
+                    <div class="price">₦2,000</div>
+                    <ul>
+                        <li>Unlimited quizzes</li>
+                        <li>All departments</li>
+                        <li>Full question bank</li>
+                        <li>Progress tracking</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <button class="pay-btn" data-plan="7" data-amount="2000">Pay with Paystack</button>
+                </div>
+            </div>
+            
+            <p class="secure">🔒 Secure payment processing. No hidden fees.</p>
+        </div>
+    </div>
+
+    <!-- Paystack Script -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

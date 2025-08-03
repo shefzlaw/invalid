@@ -1,0 +1,40 @@
+# render.yaml
+services:
+  - type: web
+    name: healthquiz-backend
+    runtime: node
+    region: oregon
+    plan: free
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        fromDatabase:
+          name: healthquiz-mongodb
+          property: connectionString
+      - key: PAYSTACK_SECRET_KEY
+        value: sk_live_3feec7faa9b8797665cc17642affe6ea9f221f2f
+      - key: PAYSTACK_PUBLIC_KEY
+        value: pk_live_d7c2e110ef3c553229953165aed8fb344684c5c8
+      - key: PAYSTACK_WEBHOOK_SECRET
+        value: 2eba89f4db4c4090a9125a646e39610608ca6b6a36ba26b7b79a03263ab55a55
+      - key: EMAIL_USER
+        value: healthquizapp2025@gmail.com
+      - key: EMAIL_PASS
+        value: hwmmrltdtcjsudff
+      - key: FRONTEND_URL
+        value: https://healthquiz-frontend.onrender.com
+    buildCommand: npm install
+    startCommand: node server.js
+    envVarSecrets:
+      - key: EMAIL_PASS
+        sync: false
+
+databases:
+  - name: healthquiz-mongodb
+    plan: free
+
+staticSites:
+  - name: healthquiz-frontend
+    path: ./frontend
+    cacheDuration: 300
